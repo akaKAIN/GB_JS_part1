@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script src="./task_3.js"></script>
+<script>
+  const playerName = prompt('Please introduce yourself')
+  const game = new GameMillionaire(
+    new Player(playerName),
+    [new Question(
+      'Hwo is Mr.Putin?',
+      [
+        new Answer('a', 'thief', true),
+        new Answer('b', 'crook', true),
+        new Answer('c', 'figurehead', true),
+        new Answer('d', 'coward', true)
+      ],
+      1000)]
+  )
+  game.startGame()
+</script>
+</body>
+</html>

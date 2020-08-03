@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+      body {
+          font-size: 12px;
+      }
+
+      .active {
+          background-color: green;
+      }
+
+      .cell-height {
+          height: 70px;
+      }
+      @media (max-width: 992px) {
+          .cell-height {
+              height: 30px;
+          }
+      }
+
+
+      .joystick {
+      }
+
+      .joystick button {
+          height: 50px;
+      }
+  </style>
+  <title>Walker</title>
+</head>
+<body>
+<div class="container text-center">
+  <div id="app" class="pt-lg-5 row">
+    <div class="interface col-3">
+      <div class="handlers row">
+        <div class="button-wrapper col" v-show="!isGameStarted">
+          <button class="btn-info btn-lg cell-height" @click="gameSwitch">WALK</button>
+        </div>
+        <div class="button-wrapper col" v-show="isGameStarted">
+          <button class="btn-danger btn-lg cell-height" @click="gameSwitch">Stop</button>
+        </div>
+      </div>
+
+      <div class="joystick mt-5" v-show="isGameStarted">
+        <div class="row">
+
+          <div class="col-4"></div>
+          <button class="col-4 btn btn-secondary cell-height" @click="up">UP</button>
+          <div class="col-4"></div>
+        </div>
+
+        <div class="row">
+          <button class="col-4 btn btn-secondary cell-height" @click="left" v-on:keyup.left="left">LEFT</button>
+          <div class="col-4"></div>
+          <button class="col-4 btn btn-secondary cell-height" @click="right">RIGHT</button>
+        </div>
+
+        <div class="row">
+          <div class="col-4"></div>
+          <button class="col-4 btn btn-secondary cell-height" @click="down">DOWN</button>
+          <div class="col-4"></div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="col-1"></div>
+    <div class="col-8">
+      <div class="field-wrapper row">
+        <template v-for="unitCell in getField">
+          <component-cell :is-player-here="unitCell.isPlayerHere"></component-cell>
+        </template>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="./game.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        game: {},
+        isGameStarted: false,
+        playerPosition: 0,
+        baseSize: 0
+      }
+    },
+    mounted() {
+      this.game = new Game()
+      this.playerPosition = this.game.playerPosition.position
+      this.baseSize = this.game.playerPosition.baseSize
+    },
+    computed: {
+      getField: function () {
+        return this.game.field
+      },
+      rowPosition: function () {
+        return this.playerPosition % this.baseSize
+      }
+    },
+    methods: {
+      gameSwitch: function () {
+        this.isGameStarted = !this.isGameStarted
+      },
+      makeMove: function (step) {
+        this.game.field[this.playerPosition].isPlayerHere = false
+        this.game.field[step].isPlayerHere = true
+        this.playerPosition = step
+      },
+      up: function () {
+        const step = this.playerPosition - this.baseSize
+        if (step >= 0) {
+          this.makeMove(step)
+        }
+      },
+      down: function () {
+        const step = this.playerPosition + this.baseSize
+        if (step < this.baseSize * this.baseSize) {
+          this.makeMove(step)
+        }
+      },
+      left: function () {
+        const step = this.playerPosition - 1
+        if (this.rowPosition > 0) {
+          this.makeMove(step)
+        }
+      },
+      right: function () {
+        const step = this.playerPosition + 1
+        if (this.rowPosition < this.baseSize - 1) {
+          this.makeMove(step)
+        }
+      }
+    }
+  })
+
+  Vue.component('component-cell', {
+    props: {
+      isPlayerHere: Boolean
+    },
+    template: '<div class="col-1 border cell-height" :class="{active : isPlayerHere}"></div>'
+  });
+</script>
+
+
+</body>
+</html>

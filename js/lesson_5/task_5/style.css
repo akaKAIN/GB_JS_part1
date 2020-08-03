@@ -1,0 +1,22 @@
+header {
+    height: 200px;
+    width: auto;
+}
+
+.cell {
+    border: 1px solid black;
+    height: 100px;
+    text-align: center;
+    font-size: 60px;
+}
+
+.cell-index {
+    padding-top: 30px;
+    height: 100px;
+    text-align: right;
+    font-size: 30px;
+}
+
+.field {
+    /*border: 2px solid black;*/
+}

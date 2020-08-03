@@ -1,0 +1,13 @@
+footer {
+    height: 150px;
+    width: auto;
+}
+
+.modal {
+    background-color: black;
+    opacity: 0.8;
+}
+
+.modal-content {
+    opacity: 1 !important;
+}
