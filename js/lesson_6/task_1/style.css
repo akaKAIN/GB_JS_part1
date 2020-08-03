@@ -1,0 +1,13 @@
+#field {
+    margin-top: 150px;
+}
+
+.cell {
+    height: 190px;
+}
+
+@media (max-width: 721px) {
+    .cell {
+        height: 150px;
+    }
+}
