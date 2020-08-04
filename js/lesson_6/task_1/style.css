@@ -4,6 +4,11 @@
 
 .cell {
     height: 190px;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: azure;
 }
 
 @media (max-width: 721px) {
