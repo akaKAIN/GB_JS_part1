@@ -13,7 +13,6 @@ class TicTacToe {
      */
     isGameOver() {
         const field = document.querySelectorAll('.cell');
-        console.log(field);
     }
     clickHandler(event) {
         const catchElem = event.target;

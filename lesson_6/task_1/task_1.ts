@@ -17,7 +17,6 @@ class TicTacToe {
      */
     isGameOver() {
         const field = document.querySelectorAll('.cell')
-
     }
 
     clickHandler(event: MouseEvent): void {
@@ -29,7 +28,6 @@ class TicTacToe {
             this.isGameOver()
             this.changeSymbol()
         }
-
     }
 
     start(): void {
@@ -60,8 +58,6 @@ class TicTacToe {
     static isEmptyCell(elem: HTMLElement): boolean {
         return elem.innerText !== '';
     }
-
-
 }
 
 const game = new TicTacToe()
