@@ -16,7 +16,7 @@ class Slider {
         if (index === -1) {
             return
         }
-        const validIndex = index + 1 <= this.body.length - 1 ? index + 1 : 0
+        const validIndex = index === this.body.length - 1 ? 0 : index + 1
         this.mainImage = this.body[validIndex]
     }
 
@@ -29,7 +29,7 @@ class Slider {
         if (index === -1) {
             return
         }
-        const validIndex = index - 1 <= 0 ? this.body.length - 1 : index - 1
+        const validIndex = index === 0 ? this.body.length - 1 : index - 1
         this.mainImage = this.body[validIndex]
     }
 
