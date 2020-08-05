@@ -61,4 +61,4 @@ function filterProducts(products) {
     return validProducts.sort(sortProductByPrice);
 }
 console.log('\nЗадание №5');
-console.log('Массив товаров с валидными фотографиями:\n', filterProducts(rawProducts));
+console.log('Массив товаров с валидными фотографиями:\n', filterProducts(newProducts));

@@ -68,4 +68,4 @@ function filterProducts(products: IProduct[]): IProduct[] {
 }
 
 console.log('\nЗадание №5');
-console.log('Массив товаров с валидными фотографиями:\n', filterProducts(rawProducts));
+console.log('Массив товаров с валидными фотографиями:\n', filterProducts(newProducts));

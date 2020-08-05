@@ -7,20 +7,27 @@ class TicTacToe {
     changeSymbol() {
         this.currentSymbol = 'X' === this.currentSymbol ? 'O' : 'X';
     }
+    /**
+     * Метод проверки того, что во всех трех ячейках по горизонтали/вертикали/диагонали
+     * находятся "символы" одного типа
+     */
+    isGameOver() {
+        const field = document.querySelectorAll('.cell');
+        console.log(field);
+    }
     clickHandler(event) {
         const catchElem = event.target;
-        console.log(this.currentSymbol);
-        // const row = catchElem.getAttribute('data-row')
-        // const col = catchElem.getAttribute('data-col')
-        if (!catchElem.innerText) {
+        const row = catchElem.getAttribute('data-row');
+        const col = catchElem.getAttribute('data-col');
+        if (catchElem.innerText === '' && catchElem.hasAttribute('data-row')) {
             catchElem.innerText = this.currentSymbol;
+            this.isGameOver();
             this.changeSymbol();
-            this.round++;
         }
     }
     start() {
         this.generateField();
-        document.addEventListener('click', this.clickHandler);
+        document.addEventListener('click', this.clickHandler.bind(this));
     }
     /**
      * Метод построения игрового поля.
