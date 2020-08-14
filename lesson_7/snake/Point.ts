@@ -7,7 +7,19 @@ class Point {
         this.y = y
     }
 
-    getPointElement() {
+    getPointElement(): Element | null {
         return document.querySelector(`tr:nth-child(${this.y}) td:nth-child(${this.x})`)
+    }
+
+    drawPointElement(className: string): void {
+        this.getPointElement()?.classList.add(className)
+    }
+
+    cleanPointElement(): void {
+        const cell = this.getPointElement()
+        if (cell) {
+            cell.removeAttribute('class')
+        }
+
     }
 }

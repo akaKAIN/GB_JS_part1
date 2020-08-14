@@ -18,3 +18,15 @@ td {
 .board {
     margin: 0 auto;
 }
+
+.fire {
+    background-color: red;
+}
+
+.water {
+    background-color: blue;
+}
+
+.wood {
+    background-color: green;
+}

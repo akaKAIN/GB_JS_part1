@@ -18,20 +18,22 @@ interface IConfig {
 class SnakeGame {
     config: IConfig;
     board: Board;
-    snake: Snake;
+    snake: Snake | null = null;
     intervalID: number | undefined;
 
 
     constructor(config: IConfig) {
         this.config = config
-        this.snake = new Snake(this.config.snake.body)
         this.board = new Board(this.config.board)
         this.intervalID = undefined
+        this.initSnake()
         this.init()
     }
 
     protected startGame() {
-        this.setInterval(setInterval(this.iterationTick.bind(this), this.getSpeed()))
+        if (this.getInterval() === undefined) {
+            this.setInterval(setInterval(this.iterationTick.bind(this), this.getSpeed()))
+        }
     }
 
     protected stopGame() {
@@ -39,17 +41,36 @@ class SnakeGame {
         this.setInterval(undefined)
     }
 
+    protected restartGame() {
+        this.stopGame()
+        this.config.snake.body = [new Point(10, 10), new Point(10, 11), new Point(10, 12)]
+        this.deleteSnake()
+        this.initSnake()
+    }
+
     init() {
-        this.drawSnake()
         this.initEventListeners()
+    }
+
+    initSnake() {
+        this.snake = new Snake(this.config.snake.body)
+        this.drawSnake()
     }
 
     initEventListeners() {
         const start = document.querySelector('.start')
         const stop = document.querySelector('.stop')
+        const restart = document.querySelector('.restart')
 
         start?.addEventListener('click', this.startGame.bind(this))
         stop?.addEventListener('click', this.stopGame.bind(this))
+        restart?.addEventListener('click', this.restartGame.bind(this))
+
+        document.addEventListener('keydown', function (e) {
+            if (e.code === 'D') {
+                console.log(this)
+            }
+        })
     }
 
 
@@ -71,38 +92,35 @@ class SnakeGame {
 
     private iterationTick() {
         this.drawSnake()
-        this.snake.doMove()
+        this.snake?.doMove()
         this.drawSnake()
     }
 
     drawSnake(): void {
-        this.snake.body.forEach(point => {
-            this.drawCell(point, this.snake.element)
+        this.snake?.body.forEach(point => {
+            if (this.snake) {
+                point.drawPointElement(this.snake.element)
+            }
         })
     }
 
-    private drawCell(point: Point, className: string) {
-        point.getPointElement()?.classList.add(className)
-    }
-
-    protected cleanCell(point: Point) {
-        const cell = point.getPointElement()
-        if (cell && cell.hasAttribute('class')) {
-            cell.removeAttribute('class')
+    deleteSnake() {
+        if (this.snake) {
+            this.snake.delTail(this.snake.body, true)
         }
     }
 }
 
 
 const configGame = {
-    speed: 1500,
+    speed: 200,
     board: {
         bordSelector: '#board',
         rowSize: 20,
         colSize: 20,
     },
     snake: {
-        body: [new Point(10, 11), new Point(10, 10)]
+        body: [new Point(10, 10), new Point(10, 11), new Point(10, 12)]
     },
 }
 

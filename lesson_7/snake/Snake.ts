@@ -11,6 +11,10 @@ class Snake extends SnakeMove{
     }
 
     doMove() {
-        this.body = this.doStepIteration(this.body)
+        this.doStepIteration(this.body)
+    }
+
+    eatObject() {
+
     }
 }

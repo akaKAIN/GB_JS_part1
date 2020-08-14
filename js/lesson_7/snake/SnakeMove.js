@@ -12,9 +12,8 @@ class SnakeMove {
         const head = this.getHead(snakeBody);
         const nextCell = this.calculateNewPositionPoint(head);
         if (this.validateStep(nextCell)) {
-            snakeBody = this.makeStep(snakeBody);
-        }
-        return snakeBody;
+            this.makeStep(snakeBody);
+        } // else { TODO: false result logic
     }
     init() {
         this.initKeyDirectionEventListener();
@@ -47,20 +46,22 @@ class SnakeMove {
     }
     // TODO: Добавлить проверку, для избежания выхода за пределы поля
     calculateNewPositionPoint(point) {
+        let x = point.x;
+        let y = point.y;
         switch (this.currentDirection) {
             case 'up':
-                point.y--;
+                y--;
                 break;
             case 'right':
-                point.x++;
+                x++;
                 break;
             case 'down':
-                point.y++;
+                y++;
                 break;
             case 'left':
-                point.x--;
+                x--;
         }
-        return point;
+        return new Point(x, y);
     }
     getCellClass(point) {
         const forwardCellEl = this.calculateNewPositionPoint(point).getPointElement();
@@ -76,11 +77,14 @@ class SnakeMove {
         const head = this.getHead(snakeBody);
         const newCell = this.calculateNewPositionPoint(head);
         snakeBody.push(newCell);
-        return snakeBody;
     }
-    delTail(snakeBody) {
-        snakeBody.shift();
-        return snakeBody;
+    delTail(snakeBody, isTotal = false) {
+        if (isTotal) {
+            snakeBody.forEach(partOfTail => partOfTail.cleanPointElement());
+            snakeBody = [];
+        }
+        const tail = snakeBody.shift();
+        tail === null || tail === void 0 ? void 0 : tail.cleanPointElement();
     }
     validateStep(nextPoint) {
         switch (this.getCellClass(nextPoint)) {
@@ -94,6 +98,7 @@ class SnakeMove {
         }
     }
     makeStep(snakeBody) {
-        return this.delTail(this.addHead(snakeBody));
+        this.addHead(snakeBody);
+        this.delTail(snakeBody);
     }
 }

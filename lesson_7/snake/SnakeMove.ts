@@ -10,13 +10,12 @@ class SnakeMove {
         this.init()
     }
 
-    protected doStepIteration(snakeBody: Point[]): Point[] {
+    protected doStepIteration(snakeBody: Point[]): void{
         const head = this.getHead(snakeBody)
         const nextCell = this.calculateNewPositionPoint(head)
         if (this.validateStep(nextCell)) {
-            snakeBody = this.makeStep(snakeBody)
-        }
-        return snakeBody
+            this.makeStep(snakeBody)
+        } // else { TODO: false result logic
     }
 
     private init() {
@@ -56,20 +55,22 @@ class SnakeMove {
 
     // TODO: Добавлить проверку, для избежания выхода за пределы поля
     protected calculateNewPositionPoint(point: Point): Point {
+        let x = point.x
+        let y = point.y
         switch (this.currentDirection) {
             case 'up':
-                point.y--
+                y--
                 break
             case 'right':
-                point.x++
+                x++
                 break
             case 'down':
-                point.y++
+                y++
                 break
             case 'left':
-                point.x--
+                x--
         }
-        return point
+        return new Point(x, y)
     }
 
     private getCellClass(point: Point): string | null {
@@ -84,16 +85,19 @@ class SnakeMove {
         return snakeBody.slice(-1)[0]
     }
 
-    private addHead(snakeBody: Point[]): Point[] {
+    private addHead(snakeBody: Point[]): void{
         const head = this.getHead(snakeBody)
         const newCell = this.calculateNewPositionPoint(head)
         snakeBody.push(newCell)
-        return snakeBody
     }
 
-    private delTail(snakeBody: Point[]): Point[] {
-        snakeBody.shift()
-        return snakeBody
+    delTail(snakeBody: Point[], isTotal: boolean = false): void{
+        if (isTotal) {
+            snakeBody.forEach(partOfTail => partOfTail.cleanPointElement())
+            snakeBody = []
+        }
+        const tail = snakeBody.shift()
+        tail?.cleanPointElement()
     }
 
     private validateStep(nextPoint: Point): boolean {
@@ -108,8 +112,9 @@ class SnakeMove {
         }
     }
 
-    private makeStep(snakeBody: Point[]): Point[] {
-        return this.delTail(this.addHead(snakeBody))
+    private makeStep(snakeBody: Point[]):void {
+        this.addHead(snakeBody)
+        this.delTail(snakeBody)
     }
 
     // Одна из предполагаемых проверок

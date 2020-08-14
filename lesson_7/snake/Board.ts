@@ -3,6 +3,7 @@ class Board {
     row: number;
     col: number;
     selector: string;
+    foodList: string[] = ['food-fire', 'food-water', 'food-wood'];
 
     constructor(config: IBoard) {
         this.row = config.rowSize
@@ -15,6 +16,11 @@ class Board {
         this.createBoard()
         this.createMenu()
         this.fillGameObjects()
+        this.createFood()
+    }
+
+    get(key: string): string | undefined {
+        return this.gameObjects.get(key)
     }
 
     fillGameObjects() {
@@ -58,9 +64,36 @@ class Board {
         const stopBtn = this.getCreatedElement('button')
         stopBtn.innerHTML = 'STOP'
         stopBtn.classList.add('btn', 'btn-info', 'mx-5', 'stop')
+        const restartBtn = this.getCreatedElement('button')
+        restartBtn.innerHTML = 'RESTART'
+        restartBtn.classList.add('btn', 'btn-info', 'mx-5', 'restart')
 
         menu.appendChild(startBtn)
         menu.appendChild(stopBtn)
+        menu.appendChild(restartBtn)
         board?.insertAdjacentElement("afterend", menu)
+    }
+
+    getRandomEmptyPoint(): Point {
+        while (true) {
+            const x = Math.floor(Math.random() * this.col)
+            const y =  Math.floor(Math.random() * this.row)
+            const freshPoint = new Point(x, y)
+            if (freshPoint.getPointElement() === null) {
+                return freshPoint
+            }
+        }
+    }
+
+    createFood() {
+        for (let i = 0; i < 3; i++) {
+            this.foodList.forEach( foodType => {
+                const element = this.get(foodType)
+                const position = this.getRandomEmptyPoint()
+                if (element) {
+                    position.drawPointElement(element)
+                }
+            })
+        }
     }
 }

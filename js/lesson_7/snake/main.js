@@ -1,28 +1,47 @@
 "use strict";
 class SnakeGame {
     constructor(config) {
+        this.snake = null;
         this.config = config;
-        this.snake = new Snake(this.config.snake.body);
         this.board = new Board(this.config.board);
         this.intervalID = undefined;
+        this.initSnake();
         this.init();
     }
     startGame() {
-        this.setInterval(setInterval(this.iterationTick.bind(this), this.getSpeed()));
+        if (this.getInterval() === undefined) {
+            this.setInterval(setInterval(this.iterationTick.bind(this), this.getSpeed()));
+        }
     }
     stopGame() {
         clearInterval(this.intervalID);
         this.setInterval(undefined);
     }
+    restartGame() {
+        this.stopGame();
+        this.config.snake.body = [new Point(10, 10), new Point(10, 11), new Point(10, 12)];
+        this.deleteSnake();
+        this.initSnake();
+    }
     init() {
-        this.drawSnake();
         this.initEventListeners();
+    }
+    initSnake() {
+        this.snake = new Snake(this.config.snake.body);
+        this.drawSnake();
     }
     initEventListeners() {
         const start = document.querySelector('.start');
         const stop = document.querySelector('.stop');
+        const restart = document.querySelector('.restart');
         start === null || start === void 0 ? void 0 : start.addEventListener('click', this.startGame.bind(this));
         stop === null || stop === void 0 ? void 0 : stop.addEventListener('click', this.stopGame.bind(this));
+        restart === null || restart === void 0 ? void 0 : restart.addEventListener('click', this.restartGame.bind(this));
+        document.addEventListener('keydown', function (e) {
+            if (e.code === 'D') {
+                console.log(this);
+            }
+        });
     }
     setInterval(id) {
         this.intervalID = id;
@@ -37,35 +56,34 @@ class SnakeGame {
         return this.config.speed;
     }
     iterationTick() {
+        var _a;
         this.drawSnake();
-        this.snake.doMove();
+        (_a = this.snake) === null || _a === void 0 ? void 0 : _a.doMove();
         this.drawSnake();
     }
     drawSnake() {
-        this.snake.body.forEach(point => {
-            this.drawCell(point, this.snake.element);
+        var _a;
+        (_a = this.snake) === null || _a === void 0 ? void 0 : _a.body.forEach(point => {
+            if (this.snake) {
+                point.drawPointElement(this.snake.element);
+            }
         });
     }
-    drawCell(point, className) {
-        var _a;
-        (_a = point.getPointElement()) === null || _a === void 0 ? void 0 : _a.classList.add(className);
-    }
-    cleanCell(point) {
-        const cell = point.getPointElement();
-        if (cell && cell.hasAttribute('class')) {
-            cell.removeAttribute('class');
+    deleteSnake() {
+        if (this.snake) {
+            this.snake.delTail(this.snake.body, true);
         }
     }
 }
 const configGame = {
-    speed: 1500,
+    speed: 200,
     board: {
         bordSelector: '#board',
         rowSize: 20,
         colSize: 20,
     },
     snake: {
-        body: [new Point(10, 11), new Point(10, 10)]
+        body: [new Point(10, 10), new Point(10, 11), new Point(10, 12)]
     },
 };
 const snakeGame = new SnakeGame(configGame);
