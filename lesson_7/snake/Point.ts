@@ -16,10 +16,6 @@ class Point {
     }
 
     cleanPointElement(): void {
-        const cell = this.getPointElement()
-        if (cell) {
-            cell.removeAttribute('class')
-        }
-
+        this.getPointElement()?.removeAttribute('class')
     }
 }

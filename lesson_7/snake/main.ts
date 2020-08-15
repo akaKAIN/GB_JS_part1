@@ -18,13 +18,17 @@ interface IConfig {
 class SnakeGame {
     config: IConfig;
     board: Board;
+    food: Food;
     snake: Snake | null = null;
+    menu: Menu;
     intervalID: number | undefined;
 
 
     constructor(config: IConfig) {
         this.config = config
         this.board = new Board(this.config.board)
+        this.menu = new Menu(this.board.selector)
+        this.food = new Food(this.board.col, this.board.row)
         this.intervalID = undefined
         this.initSnake()
         this.init()
@@ -50,11 +54,13 @@ class SnakeGame {
 
     init() {
         this.initEventListeners()
+        this.food.createFoodSet(1)
+        this.drawGameObjects()
     }
 
     initSnake() {
         this.snake = new Snake(this.config.snake.body)
-        this.drawSnake()
+        this.drawGameObjects()
     }
 
     initEventListeners() {
@@ -91,17 +97,24 @@ class SnakeGame {
     }
 
     private iterationTick() {
-        this.drawSnake()
+        this.drawGameObjects()
         this.snake?.doMove()
+        this.drawGameObjects()
+    }
+
+    drawGameObjects() {
         this.drawSnake()
+        this.food.drawFood()
     }
 
     drawSnake(): void {
-        this.snake?.body.forEach(point => {
-            if (this.snake) {
-                point.drawPointElement(this.snake.element)
-            }
-        })
+        if (this.snake) {
+            this.snake.body.forEach(point => {
+                if (this.snake) {
+                    point.drawPointElement(this.snake.element)
+                }
+            })
+        }
     }
 
     deleteSnake() {

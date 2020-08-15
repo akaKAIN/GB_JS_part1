@@ -75,8 +75,8 @@ class SnakeMove {
     }
     addHead(snakeBody) {
         const head = this.getHead(snakeBody);
-        const newHead = this.calculateNewPositionPoint(head);
-        snakeBody.push(newHead);
+        const newCell = this.calculateNewPositionPoint(head);
+        snakeBody.push(newCell);
     }
     delTail(snakeBody, isTotal = false) {
         if (isTotal) {
@@ -91,8 +91,6 @@ class SnakeMove {
             case undefined:
             case null:
                 return true;
-            case 'food-fire' || 'food-water' || 'food-wood':
-                return true;
             case 'snake':
                 return false;
             default:
@@ -102,7 +100,5 @@ class SnakeMove {
     makeStep(snakeBody) {
         this.addHead(snakeBody);
         this.delTail(snakeBody);
-    }
-    eatFood() {
     }
 }

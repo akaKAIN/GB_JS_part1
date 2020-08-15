@@ -87,8 +87,8 @@ class SnakeMove {
 
     private addHead(snakeBody: Point[]): void{
         const head = this.getHead(snakeBody)
-        const newCell = this.calculateNewPositionPoint(head)
-        snakeBody.push(newCell)
+        const newHead = this.calculateNewPositionPoint(head)
+        snakeBody.push(newHead)
     }
 
     delTail(snakeBody: Point[], isTotal: boolean = false): void{
@@ -105,6 +105,8 @@ class SnakeMove {
             case undefined:
             case null:
                 return true
+            case 'food-fire' || 'food-water' || 'food-wood':
+                return true
             case 'snake':
                 return false
             default:
@@ -115,6 +117,10 @@ class SnakeMove {
     private makeStep(snakeBody: Point[]):void {
         this.addHead(snakeBody)
         this.delTail(snakeBody)
+    }
+
+    eatFood() {
+
     }
 
     // Одна из предполагаемых проверок

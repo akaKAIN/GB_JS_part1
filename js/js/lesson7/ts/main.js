@@ -4,8 +4,6 @@ class SnakeGame {
         this.snake = null;
         this.config = config;
         this.board = new Board(this.config.board);
-        this.menu = new Menu(this.board.selector);
-        this.food = new Food(this.board.col, this.board.row);
         this.intervalID = undefined;
         this.initSnake();
         this.init();
@@ -27,12 +25,10 @@ class SnakeGame {
     }
     init() {
         this.initEventListeners();
-        this.food.createFoodSet(1);
-        this.drawGameObjects();
     }
     initSnake() {
         this.snake = new Snake(this.config.snake.body);
-        this.drawGameObjects();
+        this.drawSnake();
     }
     initEventListeners() {
         const start = document.querySelector('.start');
@@ -61,22 +57,17 @@ class SnakeGame {
     }
     iterationTick() {
         var _a;
-        this.drawGameObjects();
-        (_a = this.snake) === null || _a === void 0 ? void 0 : _a.doMove();
-        this.drawGameObjects();
-    }
-    drawGameObjects() {
         this.drawSnake();
-        this.food.drawFood();
+        (_a = this.snake) === null || _a === void 0 ? void 0 : _a.doMove();
+        this.drawSnake();
     }
     drawSnake() {
-        if (this.snake) {
-            this.snake.body.forEach(point => {
-                if (this.snake) {
-                    point.drawPointElement(this.snake.element);
-                }
-            });
-        }
+        var _a;
+        (_a = this.snake) === null || _a === void 0 ? void 0 : _a.body.forEach(point => {
+            if (this.snake) {
+                point.drawPointElement(this.snake.element);
+            }
+        });
     }
     deleteSnake() {
         if (this.snake) {

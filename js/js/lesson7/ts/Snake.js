@@ -8,9 +8,7 @@ class Snake extends SnakeMove {
     }
     doMove() {
         this.doStepIteration(this.body);
-        this.calculateLength();
     }
-    calculateLength() {
-        this.len = this.body.length;
+    eatObject() {
     }
 }

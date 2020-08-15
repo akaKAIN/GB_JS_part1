@@ -19,14 +19,14 @@ td {
     margin: 0 auto;
 }
 
-.fire {
+.fire, .food-fire {
     background-color: red;
 }
 
-.water {
+.water, .food-water {
     background-color: blue;
 }
 
-.wood {
+.wood, .food-wood {
     background-color: green;
 }
