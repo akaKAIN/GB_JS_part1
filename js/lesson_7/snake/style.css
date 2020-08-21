@@ -1,0 +1,32 @@
+body {
+    background-color: grey;
+}
+
+header {
+    height: 90px;
+}
+td {
+    border: 1px solid white;
+    height: 30px;
+    width: 30px;
+}
+
+.snake {
+    background-color: orange;
+}
+
+.board {
+    margin: 0 auto;
+}
+
+.fire, .food-fire {
+    background-color: red;
+}
+
+.water, .food-water {
+    background-color: blue;
+}
+
+.wood, .food-wood {
+    background-color: green;
+}
